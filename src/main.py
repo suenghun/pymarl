@@ -25,6 +25,9 @@ win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_na
 from functools import partial
 import sys
 import os
+import vessl
+
+vessl.init()
 
 def env_fn(env, **kwargs):
     return env(**kwargs)
@@ -42,7 +45,7 @@ def main():
     try:
         torch.manual_seed(123)
         #env = StarCraft2Env(map_name=map_name, step_mul=8)
-        env = REGISTRY["sc2"](map_name = '6h_vs_8z')
+        env = REGISTRY["sc2"](map_name = map_name)
         env_info = env.get_env_info()
         state_size = env_info["state_shape"]
         action_size = env_info["n_actions"]
@@ -67,8 +70,6 @@ def main():
                       gamma)
         t = 0
         n_episodes = 1000000
-        win_rates = []
-        epi_r = []
         for e in range(n_episodes):
             env.reset()
             done = False
@@ -128,6 +129,7 @@ def main():
                              avail_action_next, last_action)
 
             loss = agent.learn(e, variance = True, regularizer = regularizer)
+            vessl.log(step = e, payload = {'reward' : episode_reward})
             print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e, episode_reward,
                                                                                                     loss.item(),
                                                                                                     epsilon, t))
@@ -135,13 +137,8 @@ def main():
 
 
 
-            epi_r.append(episode_reward)
+#             if e % 200 == 0 and e > 0:
 
-            if e % 200 == 0 and e > 0:
-                # agent.Q_tar.load_state_dict(agent.Q.state_dict())
-                # agent.VDN_target.load_state_dict(agent.VDN.state_dict())
-                raw = pd.DataFrame(epi_r)
-                raw.to_csv(reward_save_path)
                 # with open('agent_4d.pkl', 'wb') as f:
                 #     pickle.dump(agent, f, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -185,10 +182,9 @@ def main():
                     if win_tag == True:
                         win_rate += 1 / 32 * 100
                 print("평가 승률 : {} 퍼센트".format(win_rate))
-                win_rates.append(win_rate)
+                vessl.log(step = t, payload = {'win_rate' : win_rate})
 
-                wr = pd.DataFrame(win_rates)
-                wr.to_csv(win_rate_save_path)
+                
 
 
 
@@ -197,10 +193,10 @@ def main():
         agent.buffer.episode_indices.pop()
         agent.buffer.episode_idx -=1
         agent.buffer.buffer.pop()
-        return agent, epsilon, t, e, epi_r, win_rates
+        return agent, epsilon, t, e
 
 
-def main2(agent, epsilon, t, ep, epi_r, win_rates):
+def main2(agent, epsilon, t, ep):
     try:
         torch.manual_seed(123)
         env = StarCraft2Env(map_name=map_name, step_mul=8)
@@ -281,15 +277,11 @@ def main2(agent, epsilon, t, ep, epi_r, win_rates):
                              avail_action_next, last_action)
 
             loss = agent.learn(e, variance = True, regularizer = regularizer)
+            vessl.log(step = e, payload = {'reward' : episode_reward})
             print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e, episode_reward,
                                                                                                     loss.item(),
                                                                                                     epsilon, t))
 
-            epi_r.append(episode_reward)
-
-            if e % 200 == 0 and e > 0:
-                raw = pd.DataFrame(epi_r)
-                raw.to_csv(reward_save_path)
 
             if eval == True:
                 eval_num = 32
@@ -324,11 +316,9 @@ def main2(agent, epsilon, t, ep, epi_r, win_rates):
                     if win_tag == True:
                         win_rate += 1 / 32 * 100
                 print("평가 승률 : {} 퍼센트".format(win_rate))
-                win_rates.append(win_rate)
+                vessl.log(step = t, payload = {'win_rate' : win_rate})
 
-                wr = pd.DataFrame(win_rates)
-                wr.to_csv(win_rate_save_path)
-
+                
 
 
 
@@ -338,10 +328,11 @@ def main2(agent, epsilon, t, ep, epi_r, win_rates):
         agent.buffer.episode_indices.pop()
         agent.buffer.episode_idx -=1
         agent.buffer.buffer.pop()
-        return agent, epsilon, t, e, epi_r, win_rates
+        return agent, epsilon, t, e
+    
 
 
 
-agent, epsilon, t, e, epi_r, win_rates = main()
+agent, epsilon, t, e= main()
 while True:
-    agent, epsilon, t, e, epi_r, win_rates = main2(agent, epsilon, t, e, epi_r, win_rates)
+    agent, epsilon, t, e= main2(agent, epsilon, t, e)
