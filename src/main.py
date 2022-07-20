@@ -13,6 +13,7 @@ import yaml
 
 from run import run
 
+print("되는건가?"
 SETTINGS['CAPTURE_MODE'] = "fd" # set to "no" if you want to see stdout/stderr in console
 logger = get_logger()
 
