@@ -23,7 +23,6 @@ win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_na
 
 
 from functools import partial
-from smac.env import MultiAgentEnv, StarCraft2Env
 import sys
 import os
 
