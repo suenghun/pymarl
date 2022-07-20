@@ -20,12 +20,26 @@ win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_na
 
 
 
+import sys
+import os
+
+def env_fn(env, **kwargs) -> MultiAgentEnv:
+    return env(**kwargs)
+
+REGISTRY = {}
+REGISTRY["sc2"] = partial(env_fn, env=StarCraft2Env)
+
+if sys.platform == "linux":
+    os.environ.setdefault("SC2PATH",
+                          os.path.join(os.getcwd(), "3rdparty", "StarCraftII"))
+
+
 
 def main():
     try:
         torch.manual_seed(123)
         #env = StarCraft2Env(map_name=map_name, step_mul=8)
-        env = env_REGISTRY["sc2"](map_name = '6h_vs_8z')
+        env = REGISTRY["sc2"](map_name = '6h_vs_8z')
         env_info = env.get_env_info()
         state_size = env_info["state_shape"]
         action_size = env_info["n_actions"]
