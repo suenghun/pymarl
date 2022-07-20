@@ -27,7 +27,7 @@ from smac.env import MultiAgentEnv, StarCraft2Env
 import sys
 import os
 
-def env_fn(env, **kwargs) -> MultiAgentEnv:
+def env_fn(env, **kwargs):
     return env(**kwargs)
 
 REGISTRY = {}
