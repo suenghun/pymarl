@@ -13,6 +13,7 @@ class EpisodeRunner:
         assert self.batch_size == 1
 
         self.env = env_REGISTRY[self.args.env](**self.args.env_args)
+        print("환경변수1", self.args.env, type(self.args.env))
         print("환경변수", self.args.env, self.args.env_args)
         self.episode_limit = self.env.episode_limit
         self.t = 0
