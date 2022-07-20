@@ -1,4 +1,4 @@
-from smac.env import StarCraft2Env
+#from smac.env import StarCraft2Env
 from VDN import Agent
 import numpy as np
 import torch
