@@ -13,8 +13,8 @@ from envs import REGISTRY as env_REGISTRY
 
 
 # lr 5e -4, max_grad 10, 층하나 더많듬
-regularizer = 0.7
-map_name = '6h_vs_8z'
+regularizer = 0.8
+map_name = 'MMM2'
 
 reward_save_path = 'reward_{}_regularizer_{}_not_one_by_n.csv'.format(map_name, regularizer)
 win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_name, regularizer)
@@ -129,7 +129,6 @@ def main():
                              avail_action_next, last_action)
 
             loss = agent.learn(e, variance = True, regularizer = regularizer)
-            vessl.log(step = e, payload = {'reward' : episode_reward})
             print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e, episode_reward,
                                                                                                     loss.item(),
                                                                                                     epsilon, t))
