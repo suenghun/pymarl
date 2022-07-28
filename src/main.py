@@ -228,6 +228,7 @@ def main2(agent, epsilon, t, ep):
             last_action = [init_last_actions] * num_agent
 
             state = env.get_state()
+            
             avail_action = env.get_avail_actions()
             eval = False
 
@@ -276,7 +277,6 @@ def main2(agent, epsilon, t, ep):
                              avail_action_next, last_action)
 
             loss = agent.learn(e, variance = True, regularizer = regularizer)
-            vessl.log(step = e, payload = {'reward' : episode_reward})
             print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e, episode_reward,
                                                                                                     loss.item(),
                                                                                                     epsilon, t))
