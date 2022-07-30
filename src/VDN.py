@@ -261,20 +261,20 @@ class Agent:
         import time
         s = time.time()
 
-        obses, states, actions, rewards, avail_actions, dones, paddings, obses_next, states_next, avail_actions_next = self.buffer.sample(episode)
+        obses, _, actions, rewards, avail_actions, dones, paddings, _, _, _ = self.buffer.sample(episode)
 
 
         obses = torch.tensor(obses, device=torch.device('cuda:0'))
 
         dones = torch.tensor(dones, device=torch.device('cuda:0')).float()
-        obses_next = torch.tensor(obses_next, device=torch.device('cuda:0'))
-        states_next = torch.tensor(states_next, device=torch.device('cuda:0'))
+        #obses_next = torch.tensor(obses_next, device=torch.device('cuda:0'))
+        #states_next = torch.tensor(states_next, device=torch.device('cuda:0'))
 
-        states = torch.tensor(states, device=torch.device('cuda:0'))
+        #states = torch.tensor(states, device=torch.device('cuda:0'))
         actions = torch.tensor(actions, device=torch.device('cuda:0')).long()
         rewards = torch.tensor(rewards, device=torch.device('cuda:0'))
         avail_actions = torch.tensor(avail_actions, device=torch.device('cuda:0')).bool()
-        avail_actions_next = torch.tensor(avail_actions_next, device=torch.device('cuda:0')).bool()
+        #avail_actions_next = torch.tensor(avail_actions_next, device=torch.device('cuda:0')).bool()
         paddings = torch.tensor(paddings, device=torch.device('cuda:0'))
         mask = paddings
 
