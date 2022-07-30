@@ -7,7 +7,7 @@ import pandas as pd
 from pysc2.lib.remote_controller import ConnectError, RequestError
 from pysc2.lib.protocol import ProtocolError
 from envs import REGISTRY as env_REGISTRY
-
+import gc
 
 
 
@@ -140,7 +140,10 @@ def main():
 
                 # with open('agent_4d.pkl', 'wb') as f:
                 #     pickle.dump(agent, f, protocol=pickle.HIGHEST_PROTOCOL)
-
+            gc.collect()
+            torch.cuda.empty_cache()
+            del hidden
+            
             if eval == True:
                 eval_num = 32
                 win_rate = 0
@@ -176,6 +179,9 @@ def main():
 
                         eval_reward += r
                         s += 1
+                        
+                        del temp_h, o, a_a
+                    del h_
 
                     print(eval_reward, win_tag)
                     if win_tag == True:
@@ -281,7 +287,9 @@ def main2(agent, epsilon, t, ep):
                                                                                                     loss.item(),
                                                                                                     epsilon, t))
 
-
+            gc.collect()
+            torch.cuda.empty_cache()
+            del hidden
             if eval == True:
                 eval_num = 32
                 win_rate = 0
@@ -310,10 +318,13 @@ def main2(agent, epsilon, t, ep):
                         win_tag = True if d and 'battle_won' in inf and inf['battle_won'] else False
                         eval_reward += r
                         s += 1
+                        del temp_h, o, a_a
+                    del h_
 
                     print(eval_reward, win_tag)
                     if win_tag == True:
                         win_rate += 1 / 32 * 100
+                        
                 print("평가 승률 : {} 퍼센트".format(win_rate))
                 vessl.log(step = t, payload = {'win_rate' : win_rate})
 
