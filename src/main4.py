@@ -14,7 +14,7 @@ from envs import REGISTRY as env_REGISTRY
 
 # lr 5e -4, max_grad 10, 층하나 더많듬
 regularizer = 0.8
-map_name = '3s5z_vs_3s6z'
+map_name ='corridor'
 
 reward_save_path = 'reward_{}_regularizer_{}_not_one_by_n.csv'.format(map_name, regularizer)
 win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_name, regularizer)
@@ -25,7 +25,7 @@ win_rate_save_path = 'win_rate_{}_regularizer_{}_not_one_by_n.csv'.format(map_na
 from functools import partial
 import sys
 import os
-import vessl
+import vessleor
 
 vessl.init()
 
