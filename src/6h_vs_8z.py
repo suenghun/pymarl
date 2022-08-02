@@ -1,5 +1,5 @@
 from smac.env import StarCraft2Env
-from VDN import Agent
+from VDN_CORR import Agent
 import numpy as np
 import torch
 import pickle
