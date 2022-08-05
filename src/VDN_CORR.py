@@ -20,7 +20,7 @@ class VDN(nn.Module):
 
 class Network(nn.Module):
     def __init__(self, obs_size, action_size, hidden_size):
-        torch.manual_seed(123)
+        torch.manual_seed(42)
         super(Network, self).__init__()
         self.fcn_1 = nn.Linear(obs_size, hidden_size)
         self.rnn = nn.GRU(hidden_size, hidden_size, batch_first = True)
