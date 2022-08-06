@@ -43,7 +43,6 @@ if sys.platform == "linux":
 
 def main():
     try:
-        torch.manual_seed(123)
         #env = StarCraft2Env(map_name=map_name, step_mul=8)
         env = REGISTRY["sc2"](map_name = map_name, seed = 123)
         env_info = env.get_env_info()
@@ -228,7 +227,6 @@ def main():
 
 def main2(agent, epsilon, t, ep):
     try:
-        torch.manual_seed(123)
         env = REGISTRY["sc2"](map_name = map_name, seed = 123)
         env_info = env.get_env_info()
         action_size = env_info["n_actions"]
