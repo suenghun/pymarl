@@ -52,7 +52,7 @@ def main():
         num_agent = env_info["n_agents"]
         obs_size = env_info["obs_shape"] + action_size + num_agent
         print(env_info["obs_shape"], action_size, num_agent)
-        hidden_size = 64
+        hidden_size = 128
         max_episode_len = env.episode_limit
         buffer_size = int(5e3)
         batch_size = 32
@@ -235,7 +235,7 @@ def main2(agent, epsilon, t, ep):
 
         num_agent = env_info["n_agents"]
         print("재시작 수행")
-        hidden_size = 64
+        hidden_size = 128
         max_episode_len = env.episode_limit
         min_epsilon = 0.05
         anneal_steps = 50000
