@@ -233,7 +233,7 @@ class Agent:
                             list(self.func_enemy_obs.parameters()) +\
                             list(self.func_ally_comm.parameters())
 
-        self.optimizer = optim.RMSprop(self.eval_params, lr=2e-4)
+        self.optimizer = optim.RMSprop(self.eval_params, lr=4e-4)
 
 
 
