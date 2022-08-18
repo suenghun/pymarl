@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = '2s3z'
+map_name = 'MMM2'
 
 
 
@@ -80,7 +80,7 @@ def evaluation(env, agent, num_eval, win_rates_record):
 def main():
     try:
         win_rates_record = []
-        env = REGISTRY["sc2"](map_name = map_name, seed = 123)
+        env = REGISTRY["sc2"](map_name = map_name, seed = 123, num_total_unit_types = 3)
         env_info = env.get_env_info()
         feature_size = env_info["node_features"]
         action_size = env_info["n_actions"]
