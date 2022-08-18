@@ -6,6 +6,7 @@ import random
 from collections import deque
 from torch.distributions import Categorical
 import numpy as np
+import random
 
 from model import GAT
 from layers import device
@@ -23,7 +24,6 @@ class VDN(nn.Module):
 
 class Network(nn.Module):
     def __init__(self, obs_and_action_size, hidden_size_q):
-        torch.manual_seed(42)
         super(Network, self).__init__()
         self.obs_and_action_size = obs_and_action_size
         self.fcn_1 = nn.Linear(obs_and_action_size, hidden_size_q)
@@ -177,7 +177,9 @@ class Agent:
                  buffer_size,
                  batch_size,
                  gamma):
-
+        torch.manual_seed(42)
+        np.random.seed(42)
+        random.seed(42)
         self.num_agent = num_agent
         self.feature_size = feature_size
 
