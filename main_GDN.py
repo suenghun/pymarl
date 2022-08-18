@@ -67,7 +67,7 @@ def evaluation(env, agent, num_eval, win_rates_record):
             t+=1
             if done == True:
                 win_tag = True if done and 'battle_won' in info and info['battle_won'] else False
-                print("Evaluation episode {}, win_tag {}".format(e, win_tag))
+                print("Evaluation episode {}, episode reward {}, win_tag {}".format(e, episode_reward, win_tag))
                 if win_tag == True:
                     win_rates+= 1/num_eval
     print("승률", win_rates)
