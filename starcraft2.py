@@ -1089,6 +1089,8 @@ class StarCraft2Env(MultiAgentEnv):
                         # visible and alive
                         edge_index[0].append(agent_id)
                         edge_index[1].append(e_id+self.n_agents)
+                        edge_index[1].append(agent_id)
+                        edge_index[0].append(e_id+self.n_agents)
                         
 
         return edge_index
