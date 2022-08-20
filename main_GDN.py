@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = 'MMM2'
+map_name = '3s_vs_5z'
 
 
 
