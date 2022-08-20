@@ -102,7 +102,7 @@ def main():
         epsilon = 1
         min_epsilon = 0.05
         anneal_steps = 50000
-        n_multi_head = 2
+        n_multi_head = 4
 
         dropout = 0.6
 
