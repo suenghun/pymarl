@@ -90,9 +90,9 @@ def main():
         print(env_info["obs_shape"], action_size, num_agent)
 
         hidden_size_obs = 24
-        hidden_size_comm = 36
-        n_representation_obs = 36
-        n_representation_comm = 48
+        hidden_size_comm = 28
+        n_representation_obs = 32
+        n_representation_comm = 36
 
         max_episode_len = env.episode_limit
         buffer_size = 150000
