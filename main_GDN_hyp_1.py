@@ -95,7 +95,7 @@ def main():
         n_representation_comm = 48
 
         max_episode_len = env.episode_limit
-        buffer_size = 50000
+        buffer_size = 150000
         batch_size = 32
 
         gamma = 0.99
