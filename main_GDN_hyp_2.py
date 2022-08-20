@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = '3s_vs_5z'
+map_name = '3s5z_vs_3s6z'
 
 
 
@@ -90,10 +90,10 @@ def main():
         print(env_info["obs_shape"], action_size, num_agent)
 
         hidden_size_obs = 36
-        hidden_size_comm = 48
-        n_representation_obs = 48
-        n_representation_comm = 60
-
+        hidden_size_comm = 40
+        n_representation_obs = 40
+        n_representation_comm = 44
+        
         max_episode_len = env.episode_limit
         buffer_size = 150000
         batch_size = 32
