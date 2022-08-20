@@ -89,10 +89,10 @@ def main():
 
         print(env_info["obs_shape"], action_size, num_agent)
 
-        hidden_size_obs = 32
-        hidden_size_comm = 48
-        n_representation_obs = 32
-        n_representation_comm = 64
+        hidden_size_obs = 24
+        hidden_size_comm = 36
+        n_representation_obs = 36
+        n_representation_comm = 48
 
         max_episode_len = env.episode_limit
         buffer_size = 50000
@@ -102,7 +102,7 @@ def main():
         epsilon = 1
         min_epsilon = 0.05
         anneal_steps = 50000
-        n_multi_head = 2
+        n_multi_head = 4
 
         dropout = 0.6
 
