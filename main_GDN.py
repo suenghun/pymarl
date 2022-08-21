@@ -91,6 +91,7 @@ def main():
 
         hidden_size_obs = 20
         hidden_size_comm = 24
+        hidden_size_Q = 64
         n_representation_obs = 24
         n_representation_comm = 32
         
@@ -117,6 +118,7 @@ def main():
                       feature_size=feature_size,
                       hidden_size_obs=hidden_size_obs,
                       hidden_size_comm=hidden_size_comm,
+                      hidden_size_Q=hidden_size_Q,
                       n_multi_head=n_multi_head,
                       n_representation_obs=n_representation_obs,
                       n_representation_comm=n_representation_comm,
