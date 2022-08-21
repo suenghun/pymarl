@@ -87,7 +87,7 @@ def main():
         action_feature_size = 6 + feature_size
 
         print(env_info["obs_shape"], action_size, num_agent)
-
+        
         hidden_size_obs = 48
         hidden_size_comm = 60
         hidden_size_Q = 128
@@ -95,11 +95,12 @@ def main():
         n_representation_comm = 72
         
         max_episode_len = env.episode_limit
-        buffer_size = 100000
+        buffer_size = 150000
         batch_size = 32
 
         gamma = 0.99
         epsilon = 1
+        learning_rate = 4e-4
         min_epsilon = 0.05
         anneal_steps = 50000
         n_multi_head = 1
@@ -126,6 +127,7 @@ def main():
                       buffer_size=buffer_size,
                       batch_size=batch_size,
                       max_episode_len=max_episode_len,
+                      learning_rate=learning_rate
                       gamma=gamma)
 
 
@@ -147,9 +149,10 @@ def main():
 
 
 
-
+            losses = []
+ 
             while (not done) and (step < max_episode_len):
-                step += 1
+                
                 node_feature = env.get_graph_feature()
                 edge_index_enemy = env.get_enemy_visibility_edge_index()
                 edge_index_ally = env.get_ally_visibility_edge_index()
@@ -165,6 +168,15 @@ def main():
 
                 episode_reward += reward
                 t+=1
+                step+=1
+                if e >= 10:
+                    loss = agent.learn(e)
+                    losses.append(loss.detach().item())
+                    print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
+                                                                                                                episode_reward,
+                                                                                                                loss,
+                                                                                                                epsilon,
+                                                                                                                t)
                 if t % 5000 == 0:
                     eval = True
                 if epsilon >= min_epsilon:
@@ -174,28 +186,15 @@ def main():
 
                 if t % 5000 == 0 and t > 0:
                     eval = True
+            epi_r.append(episode_reward)
+            if e % 100 == 1:
+                vessl.log(step = e, payload = {'reward' : np.mean(epi_r})
+                epi_r = []
             if eval == True:
                 win_rate = evaluation(env, agent, 32, win_rates_record)
                 vessl.log(step = t, payload = {'win_rate' : win_rate})
                 eval = False
-            if e >= 10:
-                losses = []
-                for _ in range(step):
-                    loss = agent.learn(e)
-                    losses.append(loss.detach().item())
 
-                print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
-                                                                                                            episode_reward,
-                                                                                                            loss,
-                                                                                                            epsilon,
-                                                                                                            t))
-
-            # done = True
-            # padding = 0
-            # for _ in range(step, max_episode_len):
-            #     agent.memory(obs, action, reward, avail_action, done, padding, last_action)
-
-            # loss = agent.learn(e, variance = True, regularizer = regularizer)
 
 
 
