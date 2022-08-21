@@ -320,12 +320,8 @@ class Agent:
             obs_cat_action = torch.concat([obs, action_feature], dim = 1)    # 차원 : action_size X
             obs_cat_action = obs_cat_action.float()
             Q = self.Q(obs_cat_action).squeeze(1)                                                # 차원 : action_size X 1
-
             Q = Q.masked_fill(mask[n, :]==0, float('-inf'))
-
-
             greedy_u = torch.argmax(Q)
-
             mask_n = np.array(avail_action[n], dtype=np.float64)
 
             if np.random.uniform(0, 1) >= epsilon:
@@ -339,69 +335,6 @@ class Agent:
 
 
 
-
-
-
-
-
-
-
-    # @torch.no_grad()
-    # def sample_action(self, obs, hidden_state, avail_action, epsilon, last_action, agent_id):
-    #     #print(epsilon)
-    #     "obs의 shape는 num_agent X feature"
-    #     "last_action의 shape는 action_size"
-    #     "agent_id의 shapes는 num_agent"
-    #     hidden_state = hidden_state.to(device)
-    #
-    #     obs = torch.cat([torch.tensor(obs, device=torch.device('cuda:0')),
-    #                      torch.tensor(last_action, device=torch.device('cuda:0')),
-    #                      torch.tensor(self.agent_id[agent_id], device=torch.device('cuda:0'))])
-    #     obs = obs.unsqueeze(0)
-    #
-    #     "obs :  1 x feature_size, hidden : 1 x hidden_size"
-    #
-    #     Q, hidden_state = self.Q(obs, hidden_state)
-    #     mask = torch.tensor(avail_action, device=torch.device('cuda:0')).unsqueeze(0).bool()
-    #     Q = Q.masked_fill(mask==0, float('-inf'))
-    #
-    #     greedy_u = torch.argmax(Q)
-    #
-    #     mask = np.array(avail_action, dtype=np.float64)
-    #
-    #     if np.random.uniform(0, 1) >= epsilon:
-    #         u = greedy_u
-    #     else:
-    #         u = np.random.choice(self.action_space, p=mask / np.sum(mask))
-    #
-    #
-    #     return u, hidden_state
-
-    def cal_Q_temp(self, obses, actions, avail_actions, target, agent_id, episode):
-        "mask의 shape는 batch_size X time_step X 1"
-        if episode < self.batch_size:
-            batch = episode + 1
-        else:
-            batch = self.batch_size
-
-
-        hidden = torch.zeros((1, batch, self.hidden_size),device=torch.device('cuda:0'))
-        if target == True:
-            avail_action = avail_actions[:, :, agent_id]
-            "avail_actions의 shape는 batch_size X time_step X action_size"
-
-            q_tar, _ = self.Q_tar(obses[:, :, agent_id], hidden)
-            "q_tar의 shape는 batch_size X time_step X action_size"
-            q_tar = q_tar.masked_fill(avail_action==False, float('-inf'))
-            q_tar = torch.max(q_tar, dim = 2)[0]
-            temp_q = q_tar[:, 1:].clone()
-            q_tar[:, 0:-1] = temp_q
-            return q_tar
-        else:
-            q, _ = self.Q(obses[:, :, agent_id], hidden)
-            action = actions[:, :, agent_id].unsqueeze(2)
-            q = torch.gather(q, 2, action).squeeze(2)
-            return q
     def learn(self, episode):
         node_features, actions, action_features, edge_indices_enemy, edge_indices_ally, rewards, dones, node_features_next, action_features_next, edge_indices_enemy_next, edge_indices_ally_next, avail_actions_next = self.buffer.sample()
         n_node_features = torch.tensor(node_features).shape[1]
@@ -433,7 +366,7 @@ class Agent:
         q_tot = self.VDN(q_tot)
         q_tot_tar = self.VDN_target(q_tot_tar)
 
-        td_target = rewards + self.gamma* (1-dones)*q_tot_tar
+        td_target = rewards + self.gamma* (1-dones)*q_tot_tar.detach()
         loss1 = F.mse_loss(q_tot, td_target)
 
         loss = loss1
