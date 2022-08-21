@@ -87,7 +87,7 @@ def main():
         action_feature_size = 6 + feature_size
 
         print(env_info["obs_shape"], action_size, num_agent)
-
+        
         hidden_size_obs = 48
         hidden_size_comm = 60
         hidden_size_Q = 128
@@ -100,6 +100,7 @@ def main():
 
         gamma = 0.99
         epsilon = 1
+        learning_rate = 5e-4
         min_epsilon = 0.05
         anneal_steps = 50000
         n_multi_head = 1
@@ -126,6 +127,7 @@ def main():
                       buffer_size=buffer_size,
                       batch_size=batch_size,
                       max_episode_len=max_episode_len,
+                      learning_rate=learning_rate
                       gamma=gamma)
 
 
