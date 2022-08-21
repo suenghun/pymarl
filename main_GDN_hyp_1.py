@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = '3s5z_vs_3s6z'
+map_name = '2s_vs_1sc'
 
 
 
@@ -62,14 +62,13 @@ def evaluation(env, agent, num_eval, win_rates_record):
 
             action = agent.sample_action(node_representation, action_feature, avail_action, epsilon=0)
             reward, done, info = env.step(action)
-
+            win_tag = True if done and 'battle_won' in info and info['battle_won'] else False
             episode_reward += reward
             t+=1
-            if done == True:
-                win_tag = True if done and 'battle_won' in info and info['battle_won'] else False
-                print("Evaluation episode {}, episode reward {}, win_tag {}".format(e, episode_reward, win_tag))
-                if win_tag == True:
-                    win_rates+= 1/num_eval
+            
+        print("Evaluation episode {}, episode reward {}, win_tag {}".format(e, episode_reward, win_tag))
+        if win_tag == True:
+            win_rates+= 1/num_eval
     print("승률", win_rates)
     win_rates_record.append(win_rates)
     return win_rates
@@ -89,13 +88,14 @@ def main():
 
         print(env_info["obs_shape"], action_size, num_agent)
 
-        hidden_size_obs = 32
-        hidden_size_comm = 36
-        n_representation_obs = 36
-        n_representation_comm = 40
+        hidden_size_obs = 48
+        hidden_size_comm = 60
+        hidden_size_Q = 128
+        n_representation_obs = 60
+        n_representation_comm = 72
         
         max_episode_len = env.episode_limit
-        buffer_size = 150000
+        buffer_size = 100000
         batch_size = 32
 
         gamma = 0.99
@@ -117,6 +117,7 @@ def main():
                       feature_size=feature_size,
                       hidden_size_obs=hidden_size_obs,
                       hidden_size_comm=hidden_size_comm,
+                      hidden_size_Q=hidden_size_Q,
                       n_multi_head=n_multi_head,
                       n_representation_obs=n_representation_obs,
                       n_representation_comm=n_representation_comm,
