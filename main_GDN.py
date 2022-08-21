@@ -172,11 +172,7 @@ def main():
                 if e >= 10:
                     loss = agent.learn(e)
                     losses.append(loss.detach().item())
-                    print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
-                                                                                                                episode_reward,
-                                                                                                                loss,
-                                                                                                                epsilon,
-                                                                                                                t)
+                    print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,episode_reward,loss,epsilon,t))
                 if t % 5000 == 0:
                     eval = True
                 if epsilon >= min_epsilon:
