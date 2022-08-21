@@ -176,7 +176,7 @@ def main():
                                                                                                                 episode_reward,
                                                                                                                 loss,
                                                                                                                 epsilon,
-                                                                                                                t)
+                                                                                                                t))
                 if t % 5000 == 0:
                     eval = True
                 if epsilon >= min_epsilon:
