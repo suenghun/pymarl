@@ -165,6 +165,7 @@ class Agent:
 
                  hidden_size_obs,
                  hidden_size_comm,
+                 hidden_size_Q,
 
                  n_multi_head,
 
@@ -185,6 +186,7 @@ class Agent:
 
         self.hidden_size_obs = hidden_size_obs
         self.hidden_size_comm = hidden_size_comm
+        self.hidden_size_Q = hidden_size_Q
         self.n_multi_head = n_multi_head
 
         self.n_representation_obs = n_representation_obs
@@ -201,8 +203,8 @@ class Agent:
         self.max_norm = 10
         self.VDN = VDN().to(device)
         self.VDN_target = VDN().to(device)
-        self.Q = Network(n_representation_comm+feature_size + 6, 64).to(device)
-        self.Q_tar = Network(n_representation_comm+feature_size + 6, 64).to(device)
+        self.Q = Network(n_representation_comm+feature_size + 6, self.hidden_size_Q).to(device)
+        self.Q_tar = Network(n_representation_comm+feature_size + 6, self.hidden_size_Q).to(device)
 
         self.Q_tar.load_state_dict(self.Q.state_dict())
         self.VDN_target.load_state_dict(self.VDN.state_dict())
