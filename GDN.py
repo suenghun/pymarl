@@ -177,6 +177,7 @@ class Agent:
                  action_size,
                  buffer_size,
                  batch_size,
+                 learning_rate,
                  gamma):
         torch.manual_seed(42)
         np.random.seed(42)
@@ -237,7 +238,7 @@ class Agent:
                             list(self.func_enemy_obs.parameters()) +\
                             list(self.func_ally_comm.parameters())
 
-        self.optimizer = optim.RMSprop(self.eval_params, lr=5e-4)
+        self.optimizer = optim.RMSprop(self.eval_params, lr=learning_rate)
 
 
 
