@@ -127,7 +127,7 @@ def main():
                       buffer_size=buffer_size,
                       batch_size=batch_size,
                       max_episode_len=max_episode_len,
-                      learning_rate=learning_rate.
+                      learning_rate=learning_rate,
                       gamma=gamma)
 
 
