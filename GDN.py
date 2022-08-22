@@ -27,17 +27,23 @@ class Network(nn.Module):
         super(Network, self).__init__()
         self.obs_and_action_size = obs_and_action_size
         self.fcn_1 = nn.Linear(obs_and_action_size, hidden_size_q)
-        self.fcn_2 = nn.Linear(hidden_size_q, hidden_size_q)
-        self.fcn_3 = nn.Linear(hidden_size_q, 1)
+        self.fcn_2 = nn.Linear(hidden_size_q, int(hidden_size_q/2))
+        self.fcn_3 = nn.Linear(int(hidden_size_q/2), int(hidden_size_q/4))
+        self.fcn_4 = nn.Linear(int(hidden_size_q/4), int(hidden_size_q/8))
+        self.fcn_5 = nn.Linear(int(hidden_size_q/8), 1)
 
         torch.nn.init.xavier_uniform_(self.fcn_1.weight)
         torch.nn.init.xavier_uniform_(self.fcn_2.weight)
         torch.nn.init.xavier_uniform_(self.fcn_3.weight)
+        torch.nn.init.xavier_uniform_(self.fcn_4.weight)
+        torch.nn.init.xavier_uniform_(self.fcn_5.weight)
 
     def forward(self, obs_and_action):
         x = F.relu(self.fcn_1(obs_and_action))
         x = F.relu(self.fcn_2(x))
-        q = self.fcn_3(x)
+        x = F.relu(self.fcn_3(x))
+        x = F.relu(self.fcn_4(x))
+        q = self.fcn_5(x)
         return q
 
 class Replay_Buffer:
