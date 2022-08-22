@@ -127,7 +127,7 @@ def main():
                       buffer_size=buffer_size,
                       batch_size=batch_size,
                       max_episode_len=max_episode_len,
-                      learning_rate=learning_rate
+                      learning_rate=learning_rate,
                       gamma=gamma)
 
 
@@ -188,7 +188,7 @@ def main():
                     eval = True
             epi_r.append(episode_reward)
             if e % 100 == 1:
-                vessl.log(step = e, payload = {'reward' : np.mean(epi_r})
+                vessl.log(step = e, payload = {'reward' : np.mean(epi_r)})
                 epi_r = []
             if eval == True:
                 win_rate = evaluation(env, agent, 32, win_rates_record)
