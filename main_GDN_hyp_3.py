@@ -90,7 +90,7 @@ def main():
         
         hidden_size_obs = 48
         hidden_size_comm = 60
-        hidden_size_Q = 128
+        hidden_size_Q = 64
         n_representation_obs = 60
         n_representation_comm = 72
         
@@ -100,7 +100,7 @@ def main():
 
         gamma = 0.99
         epsilon = 1
-        learning_rate = 4e-4
+        learning_rate = 5e-4
         min_epsilon = 0.05
         anneal_steps = 50000
         n_multi_head = 1
@@ -176,7 +176,7 @@ def main():
                                                                                                                 episode_reward,
                                                                                                                 loss,
                                                                                                                 epsilon,
-                                                                                                                t)
+                                                                                                                t))
                 if t % 5000 == 0:
                     eval = True
                 if epsilon >= min_epsilon:
