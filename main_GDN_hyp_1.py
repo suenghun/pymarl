@@ -30,8 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = '2s_vs_1sc'
-
+map_name = '3s_vs_5z'
 
 
 
