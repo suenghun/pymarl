@@ -100,7 +100,7 @@ def main():
 
         gamma = 0.99
         epsilon = 1
-        learning_rate = 4e-4
+        learning_rate = 2e-4
         min_epsilon = 0.05
         anneal_steps = 50000
         n_multi_head = 1
