@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.8
-map_name = '3s_vs_5z'
+map_name = '2s3z'
 
 
 
@@ -88,8 +88,8 @@ def main():
 
         print(env_info["obs_shape"], action_size, num_agent)
         
-        hidden_size_obs = 32
-        hidden_size_comm = 48
+        hidden_size_obs = 48
+        hidden_size_comm = 60
         hidden_size_Q = 64
         n_representation_obs = 60
         n_representation_comm = 72
@@ -103,7 +103,7 @@ def main():
         learning_rate = 1e-4
         min_epsilon = 0.05
         anneal_steps = 50000
-        n_multi_head = 2
+        n_multi_head = 1
 
         dropout = 0.6
 
