@@ -29,8 +29,8 @@ if sys.platform == "linux":
 
 
 
-regularizer = 0
-map_name = '2s3z'
+regularizer = 0.01
+map_name = '3s_vs_5z'
 
 
 
@@ -170,14 +170,15 @@ def main():
                 t+=1
                 step+=1
                 if e >= 10:
-                    loss = agent.learn(regularizer)
+                    loss = agent.learn(e)
                     losses.append(loss.detach().item())
                     print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
                                                                                                                 episode_reward,
                                                                                                                 loss,
                                                                                                                 epsilon,
                                                                                                                 t))
-
+                if t % 5000 == 0:
+                    eval = True
                 if epsilon >= min_epsilon:
                     epsilon = epsilon - anneal_epsilon
                 else:
@@ -192,12 +193,6 @@ def main():
             if eval == True:
                 win_rate = evaluation(env, agent, 32, win_rates_record)
                 vessl.log(step = t, payload = {'win_rate' : win_rate})
-                import pandas as pd
-                win_rates.append(win_rate)
-                df = pd.DataFrame(win_rates)
-                file_name ="hidden_size_obs={}, hidden_size_comm={}, hidden_size_Q={}, n_multi_head={}, n_representation_obs={}, n_representation_comm={}, learning_rate={}, regularizer = {}".format(hidden_size_obs, hidden_size_comm, hidden_size_Q, n_multi_head, n_representation_obs, n_representation_comm, learning_rate, regularizer) 
-                df.to_csv("\output\{}.csv".format(file_name)
-                
                 eval = False
 
 
