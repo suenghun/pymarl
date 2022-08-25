@@ -375,7 +375,7 @@ class Agent:
         q_tot = self.VDN(q_tot)
         q_tot_tar = self.VDN_target(q_tot_tar)
 
-        td_target = rewards + self.gamma* (1-dones)*q_tot_tar.detach()
+        td_target = rewards*self.num_agent + self.gamma* (1-dones)*q_tot_tar.detach()
         loss1 = F.mse_loss(q_tot, td_target)
 
         loss = loss1
