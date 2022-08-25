@@ -370,15 +370,15 @@ class Agent:
                              target=True) for agent_id in range(self.num_agent)]
 
         q_tot = torch.stack(q, dim=1)
-        loss2 = torch.var(q_tot, dim = 1)
+        loss2 = torch.mean(torch.var(q_tot, dim = 1))
         q_tot_tar = torch.stack(q_tar, dim=1)
         q_tot = self.VDN(q_tot)
         q_tot_tar = self.VDN_target(q_tot_tar)
 
         td_target = rewards*self.num_agent + self.gamma* (1-dones)*q_tot_tar.detach()
-        loss1 = F.mse_loss(q_tot, td_target)
+        loss1 = F.mse_loss(q_tot, td_target) 
 
-        loss = loss1
+        loss = loss1 + loss2
 
         self.optimizer.zero_grad()
         loss.backward()
