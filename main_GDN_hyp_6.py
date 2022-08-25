@@ -29,8 +29,8 @@ if sys.platform == "linux":
 
 
 
-regularizer = 0.8
-map_name = '3s_vs_5z'
+regularizer = 0.05
+map_name = '2s3z'
 
 
 
@@ -100,7 +100,7 @@ def main():
 
         gamma = 0.99
         epsilon = 1
-        learning_rate = 1.5e-4
+        learning_rate = 1e-4
         min_epsilon = 0.05
         anneal_steps = 50000
         n_multi_head = 1
@@ -170,7 +170,7 @@ def main():
                 t+=1
                 step+=1
                 if e >= 10:
-                    loss = agent.learn(e)
+                    loss = agent.learn(regularizer)
                     losses.append(loss.detach().item())
                     print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
                                                                                                                 episode_reward,
