@@ -344,7 +344,7 @@ class Agent:
 
 
 
-    def learn(self, episode):
+    def learn(self, regularizer):
         node_features, actions, action_features, edge_indices_enemy, edge_indices_ally, rewards, dones, node_features_next, action_features_next, edge_indices_enemy_next, edge_indices_ally_next, avail_actions_next = self.buffer.sample()
         n_node_features = torch.tensor(node_features).shape[1]
         obs = self.get_node_representation(node_features, edge_indices_enemy, edge_indices_ally, n_node_features,
@@ -378,7 +378,7 @@ class Agent:
         td_target = rewards*self.num_agent + self.gamma* (1-dones)*q_tot_tar.detach()
         loss1 = F.mse_loss(q_tot, td_target) 
 
-        loss = loss1 + loss2
+        loss = loss1 + regularizer*loss2
 
         self.optimizer.zero_grad()
         loss.backward()
