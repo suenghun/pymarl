@@ -170,7 +170,7 @@ def main():
                 t+=1
                 step+=1
                 if e >= 10:
-                    loss = agent.learn(regularizer)
+                    loss = agent.learn(e)
                     losses.append(loss.detach().item())
                     print("Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(e,
                                                                                                                 episode_reward,
