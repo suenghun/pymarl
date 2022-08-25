@@ -192,6 +192,12 @@ def main():
             if eval == True:
                 win_rate = evaluation(env, agent, 32, win_rates_record)
                 vessl.log(step = t, payload = {'win_rate' : win_rate})
+                import pandas as pd
+                win_rates.append(win_rate)
+                df = pd.DataFrame(win_rates)
+                file_name ="hidden_size_obs={}, hidden_size_comm={}, hidden_size_Q={}, n_multi_head={}, n_representation_obs={}, n_representation_comm={}, learning_rate={}, regularizer = {}".format(hidden_size_obs, hidden_size_comm, hidden_size_Q, n_multi_head, n_representation_obs, n_representation_comm, learning_rate, regularizer) 
+                df.to_csv("\output\{}.csv".format(file_name)
+                
                 eval = False
 
 
