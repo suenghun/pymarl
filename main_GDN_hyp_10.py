@@ -29,7 +29,7 @@ if sys.platform == "linux":
 
 
 
-regularizer = 0.1
+regularizer = 0.005
 map_name = '3s_vs_5z'
 
 
