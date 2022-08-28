@@ -79,7 +79,7 @@ def evaluation(env, agent, num_eval, win_rates_record):
 def main():
     try:
         win_rates_record = []
-        env = REGISTRY["sc2"](map_name = map_name, seed = 123, num_total_unit_types = 1)
+        env = REGISTRY["sc2"](map_name = map_name, seed = 123, num_total_unit_types = 2)
         env_info = env.get_env_info()
         feature_size = env_info["node_features"]
         action_size = env_info["n_actions"]
