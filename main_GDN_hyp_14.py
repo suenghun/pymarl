@@ -30,7 +30,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.02
-map_name = '3s5z_vs_3s6z'
+map_name = '2s3z'
 
 
 
