@@ -223,8 +223,8 @@ class Agent:
         self.max_norm = 10
         self.VDN = VDN().to(device)
         self.VDN_target = VDN().to(device)
-        self.Q = Network(n_representation_comm+n_representation_obs, 64).to(device)
-        self.Q_tar = Network(n_representation_comm+n_representation_obs, 64).to(device)
+        self.Q = Network(n_representation_comm+n_representation_obs, hidden_size_Q).to(device)
+        self.Q_tar = Network(n_representation_comm+n_representation_obs, hidden_size_Q).to(device)
 
         self.Q_tar.load_state_dict(self.Q.state_dict())
         self.VDN_target.load_state_dict(self.VDN.state_dict())
@@ -459,7 +459,7 @@ class Agent:
                              target=True) for agent_id in range(self.num_agent)]
 
         q_tot = torch.stack(q, dim=1)
-        loss2 = torch.var(q_tot, dim = 1)
+        loss2 = torch.var(q_tot, dim = 1).mean()
         q_tot_tar = torch.stack(q_tar, dim=1)
         q_tot = self.VDN(q_tot)
         q_tot_tar = self.VDN_target(q_tot_tar)
