@@ -29,7 +29,7 @@ if sys.platform == "linux":
 
 
 
-regularizer = 0.02
+regularizer = 0.0
 map_name = '2s3z'
 
 
