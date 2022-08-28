@@ -23,21 +23,26 @@ class VDN(nn.Module):
 
 class Network(nn.Module):
     def __init__(self, obs_and_action_size, hidden_size_q):
-        torch.manual_seed(42)
         super(Network, self).__init__()
         self.obs_and_action_size = obs_and_action_size
         self.fcn_1 = nn.Linear(obs_and_action_size, hidden_size_q)
-        self.fcn_2 = nn.Linear(hidden_size_q, hidden_size_q)
-        self.fcn_3 = nn.Linear(hidden_size_q, 1)
+        self.fcn_2 = nn.Linear(hidden_size_q, int(hidden_size_q/2))
+        self.fcn_3 = nn.Linear(int(hidden_size_q/2), int(hidden_size_q/4))
+        self.fcn_4 = nn.Linear(int(hidden_size_q/4), int(hidden_size_q/8))
+        self.fcn_5 = nn.Linear(int(hidden_size_q/8), 1)
 
         torch.nn.init.xavier_uniform_(self.fcn_1.weight)
         torch.nn.init.xavier_uniform_(self.fcn_2.weight)
         torch.nn.init.xavier_uniform_(self.fcn_3.weight)
+        torch.nn.init.xavier_uniform_(self.fcn_4.weight)
+        torch.nn.init.xavier_uniform_(self.fcn_5.weight)
 
     def forward(self, obs_and_action):
         x = F.relu(self.fcn_1(obs_and_action))
         x = F.relu(self.fcn_2(x))
-        q = self.fcn_3(x)
+        x = F.relu(self.fcn_3(x))
+        x = F.relu(self.fcn_4(x))
+        q = self.fcn_5(x)
         return q
 
 class NodeRepresentation(nn.Module):
@@ -175,7 +180,6 @@ class Replay_Buffer:
 
         return node_features, actions, action_features, edge_indices_enemy, edge_indices_ally, rewards, dones, node_features_next, action_features_next, edge_indices_enemy_next, edge_indices_ally_next, avail_actions_next
 
-
 class Agent:
     def __init__(self,
                  num_agent,
@@ -184,19 +188,19 @@ class Agent:
 
                  hidden_size_obs,
                  hidden_size_comm,
+                 hidden_size_Q,
 
                  n_multi_head,
 
                  n_representation_obs,
                  n_representation_comm,
 
-
-
                  max_episode_len,
                  dropout,
                  action_size,
                  buffer_size,
                  batch_size,
+                 learning_rate,
                  gamma):
 
         self.num_agent = num_agent
@@ -257,7 +261,7 @@ class Agent:
                            list(self.func_enemy_obs.parameters()) +\
                            list(self.func_ally_comm.parameters())
 
-        self.optimizer = optim.RMSprop(self.eval_params, lr=5e-4)
+        self.optimizer = optim.RMSprop(self.eval_params, lr=learning_rate)
 
 
 
@@ -429,7 +433,7 @@ class Agent:
             action = actions[:, :, agent_id].unsqueeze(2)
             q = torch.gather(q, 2, action).squeeze(2)
             return q
-    def learn(self, episode):
+    def learn(self, regularizer):
         node_features, actions, action_features, edge_indices_enemy, edge_indices_ally, rewards, dones, node_features_next, action_features_next, edge_indices_enemy_next, edge_indices_ally_next, avail_actions_next = self.buffer.sample()
         n_node_features = torch.tensor(node_features).shape[1]
         obs = self.get_node_representation(node_features, edge_indices_enemy, edge_indices_ally, n_node_features,
@@ -460,10 +464,10 @@ class Agent:
         q_tot = self.VDN(q_tot)
         q_tot_tar = self.VDN_target(q_tot_tar)
 
-        td_target = rewards + self.gamma* (1-dones)*q_tot_tar
-        loss1 = F.mse_loss(q_tot, td_target)
+        td_target = rewards*self.num_agent + self.gamma* (1-dones)*q_tot_tar
+        loss1 = F.mse_loss(q_tot, td_target.detach())
 
-        loss = loss1
+        loss = loss1 + regularizer * loss2
 
         self.optimizer.zero_grad()
         loss.backward()
