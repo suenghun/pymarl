@@ -1,5 +1,5 @@
-from smac.env import StarCraft2Env
-from GDN_rev import Agent
+from starcraft2 import StarCraft2Env
+from GDN_rev_1 import Agent
 import numpy as np
 import torch
 import pickle
