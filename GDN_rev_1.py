@@ -259,6 +259,7 @@ class Agent:
 
         self.eval_params = list(self.VDN.parameters()) + \
                            list(self.Q.parameters()) + \
+                           list(self.node_representation_enemy_obs) + \
                            list(self.node_representation.parameters()) + \
                            list(self.action_representation.parameters())+\
                            list(self.func_enemy_obs.parameters()) +\
