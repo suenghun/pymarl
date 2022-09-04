@@ -47,7 +47,7 @@ class Network(nn.Module):
 
 class NodeEmbedding(nn.Module):
     def __init__(self, feature_size, hidden_size, n_representation_obs):
-        torch.manual_seed(42)
+
         super(NodeEmbedding, self).__init__()
         self.feature_size = feature_size
         self.fcn_1 = nn.Linear(feature_size, hidden_size)
@@ -202,7 +202,9 @@ class Agent:
                  batch_size,
                  learning_rate,
                  gamma):
-
+        torch.manual_seed(40)
+        np.random.seed(40)
+        random.seed(40)
         self.num_agent = num_agent
         self.feature_size = feature_size
 
