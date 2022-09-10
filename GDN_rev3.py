@@ -29,20 +29,23 @@ class Network(nn.Module):
         self.fcn_2 = nn.Linear(hidden_size_q, int(hidden_size_q/2))
         self.fcn_3 = nn.Linear(int(hidden_size_q/2), int(hidden_size_q/4))
         self.fcn_4 = nn.Linear(int(hidden_size_q/4), int(hidden_size_q/8))
-        self.fcn_5 = nn.Linear(int(hidden_size_q/8), 1)
+        self.fcn_5 = nn.Linear(int(hidden_size_q/8), int(hidden_size_q/16))
+        self.fcn_6 = nn.Linear(int(hidden_size_q/16), 1)
 
         torch.nn.init.xavier_uniform_(self.fcn_1.weight)
         torch.nn.init.xavier_uniform_(self.fcn_2.weight)
         torch.nn.init.xavier_uniform_(self.fcn_3.weight)
         torch.nn.init.xavier_uniform_(self.fcn_4.weight)
         torch.nn.init.xavier_uniform_(self.fcn_5.weight)
+        torch.nn.init.xavier_uniform_(self.fcn_6.weight)
 
     def forward(self, obs_and_action):
         x = F.relu(self.fcn_1(obs_and_action))
         x = F.relu(self.fcn_2(x))
         x = F.relu(self.fcn_3(x))
         x = F.relu(self.fcn_4(x))
-        q = self.fcn_5(x)
+        x = F.relu(self.fcn_5(x))
+        q = self.fcn_6(x)
         return q
 
 class NodeEmbedding(nn.Module):
