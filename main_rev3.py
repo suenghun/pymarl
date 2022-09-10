@@ -191,9 +191,9 @@ def main():
 
 
     hidden_size_obs = 32
-    hidden_size_comm = 45
-    hidden_size_Q = 60
-    n_representation_obs = 40
+    hidden_size_comm = 42
+    hidden_size_Q = 64
+    n_representation_obs = 42
     n_representation_comm = 56
     buffer_size = 150000
     batch_size = 32
