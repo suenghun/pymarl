@@ -247,13 +247,15 @@ class Agent:
                                   nheads = n_multi_head,
                                   nclass = n_representation_obs,
                                   dropout = dropout,
-                                  alpha = 0.2 ).to(device)
+                                  alpha = 0.2,
+                                  mode = 'observation').to(device)
         self.func_ally_comm = GAT(nfeat = 2 * n_representation_obs,
                                   nhid = hidden_size_comm,
                                   nheads = n_multi_head,
                                   nclass = n_representation_comm,
                                   dropout = dropout,
-                                  alpha = 0.2).to(device)   # 수정사항
+                                  alpha = 0.2,
+                                  mode = 'communication').to(device)   # 수정사항
 
         self.eval_params = list(self.VDN.parameters()) + \
                            list(self.Q.parameters()) + \
