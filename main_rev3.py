@@ -258,9 +258,10 @@ def main():
         if e % 100 == 1:
             vessl.log(step=e, payload={'reward': np.mean(epi_r)})
             epi_r = []
-            vessl.log(step=t, payload={'win_rate': win_rate})
+            
         if eval == True:
             win_rate = evaluation(env1, agent1, 32)
+            vessl.log(step=t, payload={'win_rate': win_rate})
 
 
 
