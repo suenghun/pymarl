@@ -191,10 +191,10 @@ def main():
 
 
     hidden_size_obs = 32
-    hidden_size_comm = 36
+    hidden_size_comm = 42
     hidden_size_Q = 64
-    n_representation_obs = 48
-    n_representation_comm = 56
+    n_representation_obs = 42
+    n_representation_comm = 64
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
