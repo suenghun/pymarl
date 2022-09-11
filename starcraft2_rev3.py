@@ -1118,7 +1118,7 @@ class StarCraft2Env(MultiAgentEnv):
                     e_y = e_unit.pos.y
                     dist = self.distance(x, y, e_x, e_y)
 
-                    if dist < sight_range and e_unit.health > 0:
+                    if e_unit.health > 0: # dist < sight_range and 
                         # visible and alive
                         arr[agent_id, e_id] = 1
         return arr
