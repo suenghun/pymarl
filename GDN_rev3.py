@@ -251,7 +251,7 @@ class Agent:
                                   nclass = n_representation_obs,
                                   dropout = dropout,
                                   alpha = 0.2,
-                                  mode = 'observation').to(device)
+                                  mode = 'communication').to(device)
         self.func_ally_comm = GAT(nfeat = 2 * n_representation_obs,
                                   nhid = hidden_size_comm,
                                   nheads = n_multi_head,
