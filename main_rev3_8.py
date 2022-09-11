@@ -190,11 +190,11 @@ def main():
     env1.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
-    hidden_size_obs = 72
-    hidden_size_comm = 84
-    hidden_size_Q = 128
-    n_representation_obs = 96
-    n_representation_comm = 128
+    hidden_size_obs = 48
+    hidden_size_comm = 54
+    hidden_size_Q = 64
+    n_representation_obs = 64
+    n_representation_comm = 72
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
