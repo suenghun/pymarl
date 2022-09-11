@@ -190,15 +190,15 @@ def main():
     env1.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
-    hidden_size_obs = 48
+    hidden_size_obs = 32
     hidden_size_comm = 54
-    hidden_size_Q = 62
-    n_representation_obs = 64
-    n_representation_comm = 72
+    hidden_size_Q = 64
+    n_representation_obs = 48
+    n_representation_comm = 64
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
-    learning_rate = 4e-4
+    learning_rate = 3e-4
     n_multi_head = 1
     dropout = 0.6
     num_episode = 1000000
