@@ -62,6 +62,17 @@ spine crawler : 300.00.01.125
 
 def evaluation(env, agent, num_eval):
     max_episode_len = env.episode_limit
+    print("111최대길이", max_episode_len)
+    print("111최대길이", max_episode_len)
+    print("111최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
+    print("1최대길이", max_episode_len)
     t = 0
     win_rates = 0
     for e in range(num_eval):
@@ -133,6 +144,16 @@ def get_agent_type_of_envs(envs):
 
 def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
     max_episode_limit = env.episode_limit
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
+    print("최대길이", max_episode_limit)
     env.reset()
     done = False
     episode_reward = 0
@@ -152,6 +173,9 @@ def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
 
         action = agent.sample_action(node_representation, action_feature, avail_action, epsilon)
         reward, done, info = env.step(action)
+        
+        print("에피소드 :", e, "보상확인 :", done, reward, "step :", step)
+        
         agent.buffer.memory(node_feature, action, action_feature, edge_index_enemy, edge_index_ally, reward,
                             done, avail_action)
         episode_reward += reward
