@@ -89,6 +89,20 @@ def main():
         n_representation_comm = 56
 
         max_episode_len = env.episode_limit
+        
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        print("최대길이", max_episode_len)
+        
+        
         buffer_size = 150000
         batch_size = 32
 
@@ -152,6 +166,8 @@ def main():
 
                 action = agent.sample_action(node_representation, action_feature, avail_action, epsilon)
                 reward, done, info = env.step(action)
+                
+                print("에피소드 :", e, "보상확인 :", done, reward, "step :", step)
                 agent.buffer.memory(node_feature, action, action_feature, edge_index_enemy, edge_index_ally, reward,
                                     done, avail_action)
 
