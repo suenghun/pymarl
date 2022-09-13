@@ -27,6 +27,7 @@ def env_fn(env, **kwargs):
 
 
 REGISTRY = {}
+REGISTRY["sc2_temp"] = partial(env_fn, env=StarCraft2Env)
 REGISTRY["sc2"] = partial(env_fn, env=StarCraft2Env)
 
 if sys.platform == "linux":
@@ -183,11 +184,11 @@ def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
 
 def main():
     
-    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
+    env1_temp = REGISTRY["sc2_temp"](map_name=map_name1, seed=123, step_mul = 8)
     
-    env1.reset()
-    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1])
-    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
+    env1_temp.reset()
+    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1_temp])
+    env1_temp.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
     hidden_size_obs = 48
@@ -246,11 +247,11 @@ def main():
 
 
 
-
+    env1_temp.close()
     #network_sharing([agent1])
     t = 0
-    
-    
+    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
+    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
     epi_r = []
     for e in range(num_episode):
         episode_reward, epsilon, t, eval = train(agent1, env1, e, t, train_start, epsilon, min_epsilon, anneal_epsilon)
