@@ -196,7 +196,7 @@ def main():
     hidden_size_Q = 64
     n_representation_obs = 64
     n_representation_comm = 72
-    buffer_size = 150000
+    buffer_size = 300000
     batch_size = 32
     gamma = 0.99
     learning_rate = 2e-4
