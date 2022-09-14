@@ -27,6 +27,7 @@ def env_fn(env, **kwargs):
 
 
 REGISTRY = {}
+REGISTRY["sc2_temp"] = partial(env_fn, env=StarCraft2Env)
 REGISTRY["sc2"] = partial(env_fn, env=StarCraft2Env)
 
 if sys.platform == "linux":
@@ -183,18 +184,18 @@ def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
 
 def main():
     
-    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
+    env1_temp = REGISTRY["sc2_temp"](map_name=map_name1, seed=123, step_mul = 8)
     
-    env1.reset()
-    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1])
-    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
+    env1_temp.reset()
+    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1_temp])
+    env1_temp.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
-    hidden_size_obs = 36
-    hidden_size_comm = 48
-    hidden_size_Q = 72
-    n_representation_obs = 48
-    n_representation_comm = 64
+    hidden_size_obs = 42
+    hidden_size_comm = 64
+    hidden_size_Q = 128
+    n_representation_obs = 56
+    n_representation_comm = 84
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
@@ -210,8 +211,8 @@ def main():
     anneal_epsilon = (epsilon - min_epsilon) / anneal_steps
 
 
-    agent1 = Agent(num_agent=env1.get_env_info()["n_agents"],
-                  feature_size=env1.get_env_info()["node_features"],
+    agent1 = Agent(num_agent=env1_temp.get_env_info()["n_agents"],
+                  feature_size=env1_temp.get_env_info()["node_features"],
                   hidden_size_obs=hidden_size_obs,
                   hidden_size_comm=hidden_size_comm,
                   hidden_size_Q=hidden_size_Q,
@@ -219,10 +220,10 @@ def main():
                   n_representation_obs=n_representation_obs,
                   n_representation_comm=n_representation_comm,
                   dropout=dropout,
-                  action_size=env1.get_env_info()["n_actions"],
+                  action_size=env1_temp.get_env_info()["n_actions"],
                   buffer_size=buffer_size,
                   batch_size=batch_size,
-                  max_episode_len=env1.episode_limit,
+                  max_episode_len=env1_temp.episode_limit,
                   learning_rate=learning_rate,
                   gamma=gamma)
 
@@ -246,11 +247,11 @@ def main():
 
 
 
-
+    env1_temp.close()
     #network_sharing([agent1])
     t = 0
-    
-    
+    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
+    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
     epi_r = []
     for e in range(num_episode):
         episode_reward, epsilon, t, eval = train(agent1, env1, e, t, train_start, epsilon, min_epsilon, anneal_epsilon)
