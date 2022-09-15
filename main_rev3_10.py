@@ -191,15 +191,15 @@ def main():
     env1_temp.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
-    hidden_size_obs = 48
-    hidden_size_comm = 54
-    hidden_size_Q = 64
-    n_representation_obs = 64
-    n_representation_comm = 72
+    hidden_size_obs = 32
+    hidden_size_comm = 56
+    hidden_size_Q = 84
+    n_representation_obs = 36
+    n_representation_comm = 64
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
-    learning_rate = 3e-4
+    learning_rate = 2e-4
     n_multi_head = 1
     dropout = 0.6
     num_episode = 1000000
@@ -211,8 +211,8 @@ def main():
     anneal_epsilon = (epsilon - min_epsilon) / anneal_steps
 
 
-    agent1 = Agent(num_agent=env1.get_env_info()["n_agents"],
-                  feature_size=env1.get_env_info()["node_features"],
+    agent1 = Agent(num_agent=env1_temp.get_env_info()["n_agents"],
+                  feature_size=env1_temp.get_env_info()["node_features"],
                   hidden_size_obs=hidden_size_obs,
                   hidden_size_comm=hidden_size_comm,
                   hidden_size_Q=hidden_size_Q,
@@ -220,10 +220,10 @@ def main():
                   n_representation_obs=n_representation_obs,
                   n_representation_comm=n_representation_comm,
                   dropout=dropout,
-                  action_size=env1.get_env_info()["n_actions"],
+                  action_size=env1_temp.get_env_info()["n_actions"],
                   buffer_size=buffer_size,
                   batch_size=batch_size,
-                  max_episode_len=env1.episode_limit,
+                  max_episode_len=env1_temp.episode_limit,
                   learning_rate=learning_rate,
                   gamma=gamma)
 
