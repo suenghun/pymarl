@@ -263,10 +263,11 @@ class Agent:
         self.eval_params = list(self.VDN.parameters()) + \
                            list(self.Q.parameters()) + \
                            list(self.node_representation_enemy_obs.parameters()) + \
-                           list(self.node_representation.parameters()) + \
-                           list(self.action_representation.parameters())+\
                            list(self.func_enemy_obs.parameters()) +\
-                           list(self.func_ally_comm.parameters())
+                           list(self.node_representation.parameters()) + \
+                           list(self.func_ally_comm.parameters()) + \                   
+                           list(self.action_representation.parameters())
+                           
 
         self.optimizer = optim.RMSprop(self.eval_params, lr=learning_rate)
 
