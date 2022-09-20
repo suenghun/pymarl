@@ -607,6 +607,9 @@ class StarCraft2Env(MultiAgentEnv):
         if self.reward_scale:
             reward /= self.max_reward / self.reward_scale_rate
         self.reward = reward
+        
+        if terminated == True:
+            print("reward /= self.max_reward / self.reward_scale_rate", self.max_reward, self.reward_scale_rate)
 
         return reward, terminated, info
 
