@@ -283,7 +283,6 @@ class StarCraft2Env(MultiAgentEnv):
         self.max_reward = (
             self.n_enemies * self.reward_death_value + self.reward_win
         )
-        print("max_reward 확인", self.n_enemies, self.reward_death_value, self.reward_win)
         # create lists containing the names of attributes returned in states
         self.ally_state_attr_names = [
             "health",
@@ -607,7 +606,6 @@ class StarCraft2Env(MultiAgentEnv):
 
         if self.reward_scale:
             reward /= self.max_reward / self.reward_scale_rate
-        print("한번 더 확인", self.max_reward)
         self.reward = reward
 
         return reward, terminated, info
