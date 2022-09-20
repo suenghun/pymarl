@@ -199,7 +199,7 @@ def main():
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
-    learning_rate = 1e-4
+    learning_rate = 2e-4
     n_multi_head = 1
     dropout = 0.6
     num_episode = 1000000
