@@ -265,7 +265,7 @@ class Agent:
                            list(self.node_representation_enemy_obs.parameters()) + \
                            list(self.func_enemy_obs.parameters()) +\
                            list(self.node_representation.parameters()) + \
-                           list(self.func_ally_comm.parameters()) + \                   
+                           list(self.func_ally_comm.parameters()) + \
                            list(self.action_representation.parameters())
                            
 
