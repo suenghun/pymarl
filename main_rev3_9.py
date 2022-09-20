@@ -170,14 +170,7 @@ def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
             epsilon = min_epsilon
 
 
-    if e >= train_start:
 
-        print("{} Total reward in episode {} = {}, loss : {}, epsilon : {}, time_step : {}".format(env.map_name,
-                                                                                                e,
-                                                                                                episode_reward,
-                                                                                                loss,
-                                                                                                epsilon,
-                                                                                                t))
 
 
     return episode_reward, epsilon, t, eval
@@ -256,6 +249,14 @@ def main():
     for e in range(num_episode):
         episode_reward, epsilon, t, eval = train(agent1, env1, e, t, train_start, epsilon, min_epsilon, anneal_epsilon)
         epi_r.append(episode_reward)
+        
+        if e >= train_start:
+            print("{} Total reward in episode {} = {}, epsilon : {}, time_step : {}".format(env1.map_name,
+                                                                                                e,
+                                                                                                episode_reward,
+                                                                                                epsilon,
+                                                                                                t))
+        
         if e % 100 == 1:
             vessl.log(step=e, payload={'reward': np.mean(epi_r)})
             epi_r = []
