@@ -27,7 +27,6 @@ def env_fn(env, **kwargs):
 
 
 REGISTRY = {}
-REGISTRY["sc2_temp"] = partial(env_fn, env=StarCraft2Env)
 REGISTRY["sc2"] = partial(env_fn, env=StarCraft2Env)
 
 if sys.platform == "linux":
@@ -40,7 +39,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.0
-map_name1 = '3s5z_vs_3s6z'
+map_name1 = 'MMM2'
 
 
 """
@@ -132,9 +131,11 @@ def get_agent_type_of_envs(envs):
 
 
 
-def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
+def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon, initalizer):
     max_episode_limit = env.episode_limit
-    env.reset()
+    if initalizer == False:
+        env.reset()
+    else: pass
     done = False
     episode_reward = 0
     step = 0
@@ -177,11 +178,11 @@ def train(agent, env, e, t, train_start, epsilon, min_epsilon, anneal_epsilon):
 
 def main():
     
-    env1_temp = REGISTRY["sc2_temp"](map_name=map_name1, seed=123, step_mul = 8)
+    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
     
-    env1_temp.reset()
-    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1_temp])
-    env1_temp.generate_num_unit_types(num_unit_types, unit_type_ids)
+    env1.reset()
+    num_unit_types, unit_type_ids = get_agent_type_of_envs([env1])
+    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
 
 
     hidden_size_obs = 28
@@ -192,7 +193,7 @@ def main():
     buffer_size = 150000
     batch_size = 32
     gamma = 0.99
-    learning_rate = 1.3e-4
+    learning_rate = 1.5e-4
     n_multi_head = 1
     dropout = 0.6
     num_episode = 1000000
@@ -204,8 +205,8 @@ def main():
     anneal_epsilon = (epsilon - min_epsilon) / anneal_steps
 
 
-    agent1 = Agent(num_agent=env1_temp.get_env_info()["n_agents"],
-                  feature_size=env1_temp.get_env_info()["node_features"],
+    agent1 = Agent(num_agent=env1.get_env_info()["n_agents"],
+                  feature_size=env1.get_env_info()["node_features"],
                   hidden_size_obs=hidden_size_obs,
                   hidden_size_comm=hidden_size_comm,
                   hidden_size_Q=hidden_size_Q,
@@ -213,10 +214,10 @@ def main():
                   n_representation_obs=n_representation_obs,
                   n_representation_comm=n_representation_comm,
                   dropout=dropout,
-                  action_size=env1_temp.get_env_info()["n_actions"],
+                  action_size=env1.get_env_info()["n_actions"],
                   buffer_size=buffer_size,
                   batch_size=batch_size,
-                  max_episode_len=env1_temp.episode_limit,
+                  max_episode_len=env1.episode_limit,
                   learning_rate=learning_rate,
                   gamma=gamma)
 
@@ -237,17 +238,13 @@ def main():
     #               gamma=gamma)
 
 
-
-
-
-    env1_temp.close()
     #network_sharing([agent1])
     t = 0
-    env1 = REGISTRY["sc2"](map_name=map_name1, seed=123, step_mul = 8)
-    env1.generate_num_unit_types(num_unit_types, unit_type_ids)
+    initalizer = True
     epi_r = []
     for e in range(num_episode):
-        episode_reward, epsilon, t, eval = train(agent1, env1, e, t, train_start, epsilon, min_epsilon, anneal_epsilon)
+        episode_reward, epsilon, t, eval = train(agent1, env1, e, t, train_start, epsilon, min_epsilon, anneal_epsilon, initalizer)
+        initalizer = False
         epi_r.append(episode_reward)
         
         if e >= train_start:
