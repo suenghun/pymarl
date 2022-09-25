@@ -39,7 +39,7 @@ if sys.platform == "linux":
 
 
 regularizer = 0.0
-map_name1 = '27m_vs_30m'
+map_name1 = 'corridor'
 
 
 """
