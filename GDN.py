@@ -286,9 +286,9 @@ class Agent:
             self.func_meta_path = FastGTNs(num_edge_type=5,
                              feature_size=feature_size,
                              num_nodes=self.num_nodes,
-                             num_FastGTN_layers = 2,
+                             num_FastGTN_layers = 1,
                              hidden_size = hidden_size_meta_path,
-                             num_channels = 2,
+                             num_channels = 1,
                              num_layers = 2
                              ).to(device)
             self.node_representation = NodeEmbedding(feature_size=feature_size - 1, hidden_size=hidden_size_obs,
