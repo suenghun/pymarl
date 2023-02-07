@@ -25,10 +25,7 @@ regularizer = 0.0
 map_name1 = '3s5z'
 
 GNN = 'FastGTN'
-if GNN == 'FastGTN':
-    heterogenous = True
-else:
-    heterogenous = False
+heterogenous = False
 
 """
 Protoss
@@ -185,11 +182,11 @@ def main():
 
 
 
-    hidden_size_obs = 48       # GAT 해당(action 및 node representation의 hidden_size)
+    hidden_size_obs = 36       # GAT 해당(action 및 node representation의 hidden_size)
     hidden_size_comm = 64
-    hidden_size_Q = 84         # GAT 해당
-    hidden_size_meta_path = 54 # GAT 해당
-    n_representation_obs = 48  # GAT 해당
+    hidden_size_Q = 96         # GAT 해당
+    hidden_size_meta_path = 48 # GAT 해당
+    n_representation_obs = 64  # GAT 해당
     n_representation_comm = 72
     buffer_size = 150000
     batch_size = 32
